@@ -1,0 +1,8 @@
+{
+  "title": "Mouse gamer",
+  "slug": "mouse-gamer",
+  "description": "Mouse gamer",
+  "price": "1200",
+  "active": true,
+  "tags": ["informatica", "mouse", "gamer"]
+}
