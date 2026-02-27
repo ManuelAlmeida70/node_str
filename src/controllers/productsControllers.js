@@ -1,56 +1,63 @@
 'use strict';
 
-import Product from "../models/products.js"
 import ValidationContract from "../validators/fluent-validator.js"
 
-export const get = (req, res, next) =>
-{
-    Product
-        .find({active: true}, 'title slug price')
-        .then(data => {
-            res.status(200).send(data);
-        })
-        .catch(e => {
-            res.status(400).send(e);
-        });
-}
+import productRepository from "../repositories/productRepository.js"
 
-export const getBySlug = (req, res, next) =>
+export const get = async (req, res, next) =>
 {
-    Product
-        .findOne({
-            slug: req.params.slug,
-            active: true,
-        }, 'title description price slug tags'
-    )
-    .then(data => {
+    try
+    {
+        const data = await productRepository.get();
         res.status(200).send(data);
-    }).catch(e => {
-        res.status(400).send(e);   
-    })
+    }
+    catch(e)
+    {
+        res.status(500).send({message: "Falha ao processar requisicao"});
+    }
 }
 
-export const getById = (req, res, next) =>
+export const getBySlug = async(req, res, next) =>
 {
-    Product.findById(req.params.id)
-    .then(data => {
+    try
+    {
+        const data = await productRepository.getBySlug(req.params.slug);
         res.status(200).send(data);
-    }).catch(e => {
-        res.status(400).send(e);
-    })
+    }
+    catch(e)
+    {
+        res.status(400);
+    }
 }
 
-export const getByTag = (req, res, next) =>
+export const getById = async(req, res, next) =>
 {
-    Product.find({tags: req.params.tag}, 'title description slug tags')
-    .then(data => {
+    try
+    {
+        const data = await productRepository.getById(req.params.id);
         res.status(200).send(data);
-    }).catch(e => {
-        res.status(400).send(e);
-    })
+    }
+    catch(e)
+    {
+        res.status(400);
+    }
 }
 
-export const post = (req, res, next) => {
+export const getByTag = async(req, res, next) =>
+{
+    try
+    {
+        const data = await productRepository.getByTag(req.params.tag);
+        res.status(200).send(data);
+    }
+    catch(e)
+    {
+        res.status(400);
+    }
+}
+
+export const post = async(req, res, next) => {
+   
     let contract = new ValidationContract();
 
     contract.hasMinLen(req.body.title, 3, 'O titulo deve conter pelo menos 3 caracteres');
@@ -62,44 +69,48 @@ export const post = (req, res, next) => {
         res.status(400).send(contract.errors()).end();
         return;
     }
-        
-    var product = new Product(req.body);
-    product.save()
-        .then(x => res.status(201).send( {message: "Produto registrado com sucesso"}))
-        .catch(e => {res.status(400).send({message: "Erro ao registrar produto", data: e})})
+
+   try
+   {
+        await productRepository.create(req.body)
+        res.status(200).send({message: "Produto cadastrado com sucesso"});
+   }
+   catch(e)
+   {
+        res.status(400).send({message: "Erro ao cadastrar produto", error: e});
+   }
 };
 
 
-export const put = ('/:id', (req, res, next) => {
+export const put = ('/:id', async(req, res, next) => {
     const id = req.params.id;
-    Product.findByIdAndUpdate(id, {
-        $set: {
-            title: req.body.title,
-            description: req.body.description,
-            slug: req.body.slug,
-            price: req.body.price}
-    })
-    .then(data => {
+    try
+    {
+        const data = await productRepository.put(id, req.body);
         res.status(200).send({message: 'Produto atualizado com sucesso'});
-    })
-    .catch(e => {
+    }
+    catch(e)
+    {
         res.status(400).send({
             message: "Falha ao atualizar produto",
             data: e
         });
-    })
+    }
+        
 });
 
-export const remove = ('/:id', (req, res, next) => {
-    const id = req.params.id;
-    Product.findOneAndDelete(id)
-    .then(data => {
+export const remove = ('/:id', async(req, res, next) => {
+    try
+    {
+        const id = req.params.id;
+        const data = await productRepository.remove(id);
         res.status(200).send({message: "Produto eliminado com sucesso"});
-    })
-    .catch(e => {
+    }
+    catch(e)
+    {
         res.status(400).send(
             {message: "Falha ao eliminar produto",
             data: e
-            })
-    })
+            });
+    }
 });
