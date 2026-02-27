@@ -1,6 +1,6 @@
 'use-strict'
 
-import { getByTag } from "../controllers/productsControllers.js";
+
 import Product from "../models/products.js"
 
 const productRepository =

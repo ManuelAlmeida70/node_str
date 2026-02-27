@@ -26,7 +26,7 @@ export const getBySlug = async(req, res, next) =>
     }
     catch(e)
     {
-        res.status(400);
+        res.status(400).send({message: "Falha ao processar requisicao"});
     }
 }
 
@@ -39,7 +39,7 @@ export const getById = async(req, res, next) =>
     }
     catch(e)
     {
-        res.status(400);
+        res.status(400).send({message: "Falha ao processar requisicao"});
     }
 }
 
@@ -52,7 +52,7 @@ export const getByTag = async(req, res, next) =>
     }
     catch(e)
     {
-        res.status(400);
+        res.status(400).send({message: "Falha ao precessar requisao"});
     }
 }
 
@@ -82,7 +82,7 @@ export const post = async(req, res, next) => {
 };
 
 
-export const put = ('/:id', async(req, res, next) => {
+export const put = async(req, res, next) => {
     const id = req.params.id;
     try
     {
@@ -97,9 +97,9 @@ export const put = ('/:id', async(req, res, next) => {
         });
     }
         
-});
+};
 
-export const remove = ('/:id', async(req, res, next) => {
+export const remove = async(req, res, next) => {
     try
     {
         const id = req.params.id;
@@ -113,4 +113,4 @@ export const remove = ('/:id', async(req, res, next) => {
             data: e
             });
     }
-});
+};
