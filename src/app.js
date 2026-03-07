@@ -11,6 +11,10 @@ import indexRoutes from './routers/indexRouters.js'
 import productsRoutes from './routers/productRouters.js'
 
 
+//Carregar models
+import Order from './models/order.js';
+
+
 //Conectar ao banco de dados
 dotenv.config();
 mongoose.connect(process.env.MONGODB_URI);

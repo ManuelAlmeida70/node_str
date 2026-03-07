@@ -13,3 +13,5 @@ const customerRepository = {
         return (res);
     }
 }
+
+export default customerRepository;
