@@ -1,5 +1,6 @@
 'use-strict'
 
+import mongoose from "mongoose";
 import Customer from "../models/customer"
 
 const customerRepository = {
@@ -11,6 +12,11 @@ const customerRepository = {
                 email: email
             });
         return (res);
+    },
+
+    create: async(data) => {
+        var customer = new Customer(data);
+        await customer.save();
     }
 }
 
