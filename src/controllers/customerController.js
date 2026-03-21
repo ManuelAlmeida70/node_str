@@ -3,6 +3,32 @@
 import customerRepository from '../repositories/customerRepository'
 import validationContract from '../validators/fluent-validator'
 
+
+export const post = async(req, res, next) => {
+    
+    let contract = new validationContract();
+
+    contract.hasMaxLen(req.body.name, 3, "O nome deve conter pelo menos 3 caracteres");
+    contract.hasMaxLen(req.body.password, 8, "A palavra-passe deve conter pelo menos 8 caracteres");
+    contract.isEmail(req.email, "Email invalidio");
+
+    if (!contract.isValid())
+    {
+        res.status(404).send(contract.errors()).end();
+        return;
+    }
+
+    try
+    {
+        await customerRepository.create(req.body);
+        res.status(201).send({message: "Consumidor cadastrado com sucesso"});
+    }
+    catch(e)
+    {
+       res.status(500).send({message: "A falha ao precessar requisição"});
+    }
+}
+
 export const get = async(req, res, next) => {
 
     let contract = new validationContract();
@@ -11,7 +37,7 @@ export const get = async(req, res, next) => {
 
     if (!contract.isValid())
     {
-        res.status.send(contract.errors()).end();
+        res.status(400).send(contract.errors()).end();
         return;
     }
 
