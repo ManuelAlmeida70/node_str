@@ -1,7 +1,7 @@
 'use-strict'
 
 import mongoose from "mongoose";
-import Customer from "../models/customer"
+import Customer from "../models/customer.js"
 
 const customerRepository = {
 

@@ -9,6 +9,7 @@ import mongoose from 'mongoose';
 //carregar rotas
 import indexRoutes from './routers/indexRouters.js'
 import productsRoutes from './routers/productRouters.js'
+import customerRoutes from './routers/customerRouters.js';
 
 
 //Carregar models
@@ -30,5 +31,6 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 app.use('/', indexRoutes);
 app.use('/products', productsRoutes);
+app.use('/customers', customerRoutes);
 
 export default app;

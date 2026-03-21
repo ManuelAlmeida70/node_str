@@ -1,16 +1,19 @@
 'use-strict'
 
-import customerRepository from '../repositories/customerRepository'
-import validationContract from '../validators/fluent-validator'
+import customerRepository from '../repositories/customerRepository.js'
+import validationContract from '../validators/fluent-validator.js'
 
+
+// Validacao do email do metedo post
+// contract.isEmail(req.body.email, "Email invalido");
 
 export const post = async(req, res, next) => {
     
     let contract = new validationContract();
 
-    contract.hasMaxLen(req.body.name, 3, "O nome deve conter pelo menos 3 caracteres");
-    contract.hasMaxLen(req.body.password, 8, "A palavra-passe deve conter pelo menos 8 caracteres");
-    contract.isEmail(req.email, "Email invalidio");
+    contract.hasMinLen(req.body.name, 3, "O nome deve conter pelo menos 3 caracteres");
+    contract.hasMinLen(req.body.password, 8, "A palavra-passe deve conter pelo menos 8 caracteres");
+    
 
     if (!contract.isValid())
     {
