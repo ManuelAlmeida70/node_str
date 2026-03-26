@@ -30,4 +30,17 @@ export const post = async(req, res, next) =>
     {
         res.status(500).send({message: "Erro ao processar requisicao"});
     }
+};
+
+
+export const getall = async(req, res, next) => {
+    try
+    {
+        let data = await orderRepository.getall();
+        res.status(200).send(data);
+    }
+    catch(e)
+    {
+        res.status(400).send({message: "Nao encontrado"});
+    }
 }

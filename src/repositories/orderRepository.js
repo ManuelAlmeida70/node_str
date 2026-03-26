@@ -11,7 +11,7 @@ const orderRepository = {
     },
 
     getall: async () => {
-        const res = await Order.find();
+        const res = await Order.find({}).populate("customer", "name").populate("items.product", "title");
         return res;
     }
 
