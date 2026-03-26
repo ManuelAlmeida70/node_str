@@ -10,10 +10,7 @@ import mongoose from 'mongoose';
 import indexRoutes from './routers/indexRouters.js'
 import productsRoutes from './routers/productRouters.js'
 import customerRoutes from './routers/customerRouters.js';
-
-
-//Carregar models
-import Order from './models/order.js';
+import orderRoutes from './routers/orderRouters.js';
 
 
 //Conectar ao banco de dados
@@ -32,5 +29,6 @@ app.use(bodyParser.urlencoded({ extended: false}));
 app.use('/', indexRoutes);
 app.use('/products', productsRoutes);
 app.use('/customers', customerRoutes);
+app.use('/orders', orderRoutes);
 
 export default app;
